@@ -36,16 +36,19 @@ $apolloConfig->appId = $_ENV['APOLLO_APP_ID'];
 $apolloConfig->cluster = $_ENV['APOLLO_CLUSTER'];
 $apolloConfig->secret = $_ENV['APOLLO_SECRET'];
 
+
 //开始同步配置到.env
 $timeout = (int)($argv[1] ?? 0);//定时任务跑一般设置为60，supervisor跑可不设置
 $apolloClient = new ApolloClient($apolloConfig);
 $handler = new ApolloEnvHandler($sysEnvPath);
 $sync = new ApolloConfigSync($apolloClient);
 $sync->addHandler($_ENV['APOLLO_NAMESPACE'], $handler);
-$sync->run('', $timeout);
 
-//用force方法强制拉取配置一次
-//$sync->force();
+//用force方法强制同步配置一次
+$sync->force();
+//或者常驻执行
+$sync->run($_SERVER['SERVER_ADDR'], $timeout);
+
 ```
 
 
@@ -79,7 +82,7 @@ stopwaitsecs=60
 stdout_logfile=/home/www/app.com/apollo.log
 ```
 
-## Hander处理器
+## Hander处理器（可实现多个namespace或多种配置方式同步）
 代码默认实现了.env文件的配置同步，如需其他格式的配置同步可增加新的Handler处理器，新的Handler处理器需实现`Xbyter\ApolloClient\Handlers\HandlerInterface`接口
 ```php
 $apolloClient = new ApolloClient($apolloConfig);
@@ -87,5 +90,7 @@ $apolloClient = new ApolloClient($apolloConfig);
 $handler = new ApolloEnvHandler($sysEnvPath);
 $sync = new ApolloConfigSync($apolloClient);
 $sync->addHandler($_ENV['APOLLO_NAMESPACE'], $handler);
-$sync->addHandler($_ENV['APOLLO_NAMESPACE'], 新的处理器...);
+$sync->addHandler('阿波罗命名空间namespace1', 新的处理器1);//每个namespace都可以有不同/相同的处理方式
+$sync->addHandler('阿波罗命名空间namespace1', 新的处理器2);
+$sync->addHandler('阿波罗命名空间namespace2', 新的处理器3);
 ```

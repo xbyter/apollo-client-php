@@ -35,7 +35,8 @@ $apolloClient = new ApolloClient($apolloConfig);
 $handler = new ApolloEnvHandler($sysEnvPath);
 $sync = new ApolloConfigSync($apolloClient);
 $sync->addHandler($_ENV['APOLLO_NAMESPACE'] ?? 'application', $handler);
-$sync->run('', $timeout);
 
 //用force方法强制同步配置一次
-//$sync->force();
+$sync->force();
+//或者常驻执行
+$sync->run($_SERVER['SERVER_ADDR'], $timeout);
