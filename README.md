@@ -1,7 +1,7 @@
 # 基于携程Apollo的PHP客户端
 
 ## 说明
-基于携程Apollo的PHP客户端，不依赖第三方扩展或框架。可用于Laravel, ThinkPHP, YII, Symfony, Swoole等框架。默认支持.env文件的配置同步，如需支持其他格式的配置同步可增加新的Handler处理器，新的Handler处理器需实现`Xbyter\ApolloClient\Handlers\HandlerInterface`接口。详见`Hander处理器`
+基于携程Apollo的PHP客户端，不依赖第三方扩展和框架。可用于Laravel, ThinkPHP, YII, Symfony, Swoole等框架。默认支持.env文件的配置同步，如需支持其他格式的配置同步可增加新的Handler处理器，新的Handler处理器需实现`Xbyter\ApolloClient\Handlers\HandlerInterface`接口。详见`Hander处理器`
 
 ## 安装
 ```

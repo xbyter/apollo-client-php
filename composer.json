@@ -1,6 +1,6 @@
 {
   "name": "xbyter/apollo-client",
-  "description": "apollo client for php",
+  "description": "基于携程Apollo的PHP客户端，不依赖第三方扩展和框架并支持自定义配置格式同步（默认支持.env格式配置同步）。",
   "type": "library",
   "license": "MIT",
   "keywords": [
