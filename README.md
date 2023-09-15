@@ -19,6 +19,8 @@ use Xbyter\ApolloClient\Handlers\ApolloEnvHandler;
 define('BASE_PATH', dirname(__DIR__) . '/'); //项目根目录
 
 include BASE_PATH . 'vendor/autoload.php';
+//执行Laravel相关命令需要引入bootstrap/app.php, 比如使用ApolloArtisanConfigCacheHandler来将配置缓存
+include BASE_PATH.'/bootstrap/app.php';
 
 //系统.env配置，阿波罗的配置会同步到该文件
 $sysEnvPath = BASE_PATH . '.env';
@@ -42,7 +44,11 @@ $timeout = (int)($argv[1] ?? 0);//定时任务跑一般设置为60，supervisor�
 $apolloClient = new ApolloClient($apolloConfig);
 $handler = new ApolloEnvHandler($sysEnvPath);
 $sync = new ApolloConfigSync($apolloClient);
-$sync->addHandler($_ENV['APOLLO_NAMESPACE'], $handler);
+$sync->addHandler($_ENV['APOLLO_NAMESPACE'] ?? 'application', $handler);
+
+//如果需要执行Laravel的artisan config:cache命令，则建议加下下面Handler（需要在开头引入Laravel的bootstrap/app.php）
+$configCacheHandler = new ApolloArtisanConfigCacheHandler();
+$sync->addHandler($_ENV['APOLLO_NAMESPACE'] ?? 'application', $configCacheHandler);
 
 //用force方法强制同步配置一次
 $sync->force();
