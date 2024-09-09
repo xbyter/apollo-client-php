@@ -19,8 +19,6 @@ use Xbyter\ApolloClient\Handlers\ApolloEnvHandler;
 define('BASE_PATH', dirname(__DIR__) . '/'); //项目根目录
 
 include BASE_PATH . 'vendor/autoload.php';
-//执行Laravel相关命令需要引入bootstrap/app.php, 比如使用ApolloArtisanConfigCacheHandler来将配置缓存
-include BASE_PATH.'/bootstrap/app.php';
 
 //系统.env配置，阿波罗的配置会同步到该文件
 $sysEnvPath = BASE_PATH . '.env';
